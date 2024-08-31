@@ -1,0 +1,8 @@
+numpy
+python-dotenv
+scikit-learn
+openai
+pymongo
+langchain
+pypdf
+flask
