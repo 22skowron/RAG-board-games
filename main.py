@@ -12,11 +12,11 @@ chat_history = []
 def update_chat_history(user_query, ai_answer):
     chat_history.append({"role": "user", "content": user_query})
     chat_history.append({"role": "assistant", "content": ai_answer})
-    
+
     # Ensure chat history has a maximum of 20 messages
     while len(chat_history) > 20:
         chat_history.pop(0)
-        chat_history.pop(0) 
+        chat_history.pop(0)
 
 
 @app.post('/ai_assistant')
@@ -26,12 +26,12 @@ def get_ai_response():
 
         user_query = data.get('user_query')
         if not user_query:
-            return jsonify({ 'message': f'❌ Missing user query.' }), 400
+            return jsonify({'message': f'❌ Missing user query.'}), 400
 
         # Embed user query
         user_query_embedding = generate_embedding(user_query)
         if not user_query_embedding:
-            return jsonify({ 'message': f'❌ Failed to generate an embedding.' }), 400
+            return jsonify({'message': f'❌ Failed to generate an embedding.'}), 400
 
         # Load documents
         documents = load_documents()
@@ -50,16 +50,14 @@ def get_ai_response():
         update_chat_history(user_query, ai_answer)
 
         print(f'CHAT HISTORY LENGTH: {len(chat_history)}\n')
-        print('CHAT HISTORY:\n')
         print(f'AI ANSWER:\n{ai_answer}\n')
 
-        return jsonify({ 'ai_answer': ai_answer }), 200
+        return jsonify({'ai_answer': ai_answer}), 200
 
     except Exception as e:
         print(f'❌ An error occurred during processing the request: {e} ❌')
-        return jsonify({ 'message': f'❌ An error occurred during processing the request: {e}.' }), 400
+        return jsonify({'message': f'❌ An error occurred during processing the request: {e}.'}), 400
 
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
-
